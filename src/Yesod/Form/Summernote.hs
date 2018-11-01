@@ -1,3 +1,4 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
 -- | Provide the user with the Summernote rich text editor.
 --
 -- /NOTES:/
@@ -67,9 +68,9 @@ class Yesod a => YesodSummernote a where
 -- @
 -- snHtmlFieldCustomized "{ height: 150, codemirror: { theme:'monokai' } }"
 -- @
-snHtmlFieldCustomized :: (YesodSummernote site, Monad m)
+snHtmlFieldCustomized :: YesodSummernote site
                       => String
-                      -> Field (HandlerT site m) Html
+                      -> Field (HandlerFor site) Html
 snHtmlFieldCustomized cfg = Field
     { fieldParse =
         \e _ -> return $
@@ -99,8 +100,8 @@ $(document).ready(function(){
     showVal = either id (pack . renderHtml)
 
 -- | Summernote editor field with default settings.
-snHtmlField :: (YesodSummernote site, Monad m)
-            => Field (HandlerT site m) Html
+snHtmlField :: YesodSummernote site
+            => Field (HandlerFor site) Html
 snHtmlField = snHtmlFieldCustomized ""
 
 
