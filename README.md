@@ -18,3 +18,5 @@ summerForm = renderBootstrap3 BootstrapBasicForm $ HtmlComment
   <$> areq (snHtmlFieldCustomized "{toolbar:false}") "Title" Nothing
   <*> areq snHtmlField "Comment" Nothing
 ```
+
+add support lts-12.14
