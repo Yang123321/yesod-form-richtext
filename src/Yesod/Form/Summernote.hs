@@ -41,15 +41,15 @@ class Yesod a => YesodSummernote a where
     -- | JQuery library location.
     urlJQueryScript :: a -> Either (Route a) Text
     urlJQueryScript _ =
-        Right "http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"
+        Right "http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"
     -- | Summernote Editor CSS location.
     urlSummernoteCss :: a -> Either (Route a) Text
     urlSummernoteCss _ = Right
-        "http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.0/summernote.css"
+        "http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css"
     -- | Summernote Editor library location.
     urlSummernoteScript :: a -> Either (Route a) Text
     urlSummernoteScript _ = Right
-        "http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.0/summernote.js"
+        "http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"
     -- | Should required libraries and scripts be added in DOM tree?  This
     -- property required to control script loading.  In case if you load JQuery,
     -- Bootstrap, and Summernote libraries and CSS in @<head>@ it is not
