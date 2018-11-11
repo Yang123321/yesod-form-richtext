@@ -29,27 +29,27 @@ import           Text.Julius                     (julius, rawJS)
 import           Yesod.Core
 import           Yesod.Form
 
-class Yesod a => YesodSummernote a where
+class Yesod a =>  YesodSummernote a where
     -- | Bootstrap 3 CSS location.
     urlBootstrapCss :: a -> Either (Route a) Text
     urlBootstrapCss _ =
-        Right "http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css"
+        Right "http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.css"
     -- | Bootstrap 3 library location.
     urlBootstrapScript :: a -> Either (Route a) Text
     urlBootstrapScript _ =
-        Right "http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"
+        Right "http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.js"
     -- | JQuery library location.
     urlJQueryScript :: a -> Either (Route a) Text
     urlJQueryScript _ =
-        Right "http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"
+        Right "http://cdn.bootcss.com/jquery/3.2.1/jquery.js"
     -- | Summernote Editor CSS location.
     urlSummernoteCss :: a -> Either (Route a) Text
     urlSummernoteCss _ = Right
-        "http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css"
+        "http://cdn.bootcss.com/summernote/0.8.9/summernote.css"
     -- | Summernote Editor library location.
     urlSummernoteScript :: a -> Either (Route a) Text
     urlSummernoteScript _ = Right
-        "http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"
+        "http://cdn.bootcss.com/summernote/0.8.9/summernote.js"
     -- | Should required libraries and scripts be added in DOM tree?  This
     -- property required to control script loading.  In case if you load JQuery,
     -- Bootstrap, and Summernote libraries and CSS in @<head>@ it is not
@@ -60,6 +60,7 @@ class Yesod a => YesodSummernote a where
     summernoteLoadLibrariesAndCss :: a -> Bool
     summernoteLoadLibrariesAndCss _ = False
 
+
 -- | Customizable Summernote editor field.
 --
 -- @cfg@ argument should be a JSON formatted string, it will be passed to
@@ -68,15 +69,16 @@ class Yesod a => YesodSummernote a where
 -- @
 -- snHtmlFieldCustomized "{ height: 150, codemirror: { theme:'monokai' } }"
 -- @
-snHtmlFieldCustomized :: YesodSummernote site
-                      => String
-                      -> Field (HandlerFor site) Html
+
+snHtmlFieldCustomized :: (Monad m,YesodSummernote (HandlerSite m))=>
+                         String
+                      -> Field m Html
 snHtmlFieldCustomized cfg = Field
     { fieldParse =
         \e _ -> return $
             Right . fmap (preEscapedToMarkup . sanitizeBalance) . listToMaybe $ e
     , fieldView = \theId name attrs val _isReq -> do
-        toWidget [shamlet|
+        toWidget [hamlet|
 $newline never
 <textarea id="#{theId}" *{attrs} name="#{name}" .html>#{showVal val}
 |]
@@ -100,8 +102,8 @@ $(document).ready(function(){
     showVal = either id (pack . renderHtml)
 
 -- | Summernote editor field with default settings.
-snHtmlField :: YesodSummernote site
-            => Field (HandlerFor site) Html
+snHtmlField :: (Monad m,YesodSummernote (HandlerSite m))=>
+               Field m Html
 snHtmlField = snHtmlFieldCustomized ""
 
 
